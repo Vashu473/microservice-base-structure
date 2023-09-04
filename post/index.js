@@ -19,7 +19,8 @@ app.post("/post", async (req, res) => {
     };
     await axios({
       method: "post",
-      url: "http://localhost:4005/events",
+      url: "http://event-bus:4005/events",
+      // url: "http://localhost:4005/events",
       data: {
         type: "postCreated",
         data: {
@@ -28,15 +29,19 @@ app.post("/post", async (req, res) => {
         },
       },
     });
-    res.status(201).send(post[id]);
+    return res.status(201).send(post[id]);
   } catch (error) {
     return res.send(error.message);
   }
 });
 
 app.post("/events", (req, res) => {
-  console.log(req.body.type);
-  res.send({});
+  try {
+    console.log("post", req.body.type);
+    return res.status(201).send({});
+  } catch (error) {
+    return res.send(error.message);
+  }
 });
 
 app.listen(port, () => console.log(`Post running.... ${port}!`));
